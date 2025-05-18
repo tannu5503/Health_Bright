@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Notification Settings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #03045E;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #0077B6;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 40%;
+            margin: 50px auto;
+            text-align: center;
+            color: white;
+            padding: 25px;
+        }
+        .switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: bold;
+            color: #90e0ef;
+            margin-bottom: 10px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            transition: .4s;
+            border-radius: 25px;
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 3.5px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 0 2px rgba(0,0,0,0.2);
+        }
+        input:checked + .slider {
+            background-color: #48cae4;
+            border-color: #48cae4;
+        }
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        button {
+            background-color: #0077B6;
+            color: white;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #03045E;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div>Health Bright</div>
+    <div>
+        <a href="/dashboard" style="color: white; text-decoration: none; margin-right: 15px;">Dashboard</a>
+        <a href="/profile" style="color: white; text-decoration: none; margin-right: 15px;">User Options</a>
+        <a href="/logout" style="color: white; text-decoration: none;">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Notification Settings</h2>
+    <form method="POST" action="/profile/notifications">
+        <div class="switch-container">
+            <span>Off</span>
+            <label class="switch">
+                <input type="checkbox" name="notifications_enabled" id="notificationSwitch">
+                <span class="slider"></span>
+            </label>
+            <span>On</span>
+        </div>
+        <button type="submit">Save Settings</button>
+    </form>
+</div>
+
+<footer style="background-color: #0077B6; color: white; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%;">
+    © 2025 Health Bright - All Rights Reserved
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/get_notification_setting')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("notificationSwitch").checked = data.enabled;
+            });
+    });
+</script>
+
+</body>
+</html>

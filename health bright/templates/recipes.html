@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Food Menu</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    height: 100%;
+    margin: 0;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    font-family: 'Montserrat', sans-serif;
+    color: #ffffffdd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Container holding both boxes */
+  .container {
+    display: flex;
+    gap: 40px;
+    max-width: 1200px;
+    width: 95vw;
+    height: 85vh;
+  }
+
+  /* Glass box style */
+  .glass-box {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Scrollbar style for modern browsers */
+  .glass-box::-webkit-scrollbar {
+    width: 8px;
+  }
+  .glass-box::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .glass-box::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+  }
+
+  /* Dropdown buttons */
+  .dropdown-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #e0e0e0;
+    font-weight: 700;
+    font-size: 1.2rem; 
+    padding: 16px 24px;
+    width: 100%;
+    text-align: left;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dropdown-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Dropdown content container */
+  .dropdown-content {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    max-height: 180px;
+    overflow-y: auto;
+    display: none;
+  }
+
+.navbar {
+            background: rgba(0, 119, 182, 0.85);
+            padding: 14px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar a {
+            color: #f0f0f0;
+            text-decoration: none;
+            margin-left: 25px;
+            transition: color 0.3s ease;
+        }
+        .navbar a:hover {
+            color: #a0d8ef;
+        }
+
+
+
+
+
+  /* Food items */
+  .food-item {
+    padding: 10px 18px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background 0.25s ease;
+  }
+  .food-item:last-child {
+    border-bottom: none;
+  }
+  .food-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Right box recipe area */
+  #recipeDetails {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 25px;
+    color: #ffffffcc;
+    overflow-y: auto;
+    flex-grow: 1;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  }
+
+  #recipeDetails img {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  }
+
+  #recipeDetails h3 {
+    margin-top: 0;
+    color: #ffd700;
+    font-weight: 800;
+    text-shadow: 0 0 6px #ffd700aa;
+  }
+
+  #recipeDetails ul {
+    padding-left: 20px;
+  }
+
+  #recipeDetails ul li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  #recipeDetails a {
+    color: #ffd700cc;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  #recipeDetails a:hover {
+    text-decoration: underline;
+  }
+
+  /* Arrow rotation on open */
+  .dropdown-btn.open::after {
+    content: '▲';
+  }
+  .dropdown-btn::after {
+    content: '▼';
+    font-weight: 700;
+    margin-left: 10px;
+  }
+</style>
+</head>
+<body>
+    <nav class="navbar">
+        <div>Health Bright</div>
+        <div>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+<div class="container">
+  <!-- Left glass box: Food lists with dropdown -->
+  <div class="glass-box">
+    <button class="dropdown-btn">Breakfast</button>
+    <div class="dropdown-content">
+      <div class="food-item" onclick="fetchRecipe('Oatmeal with fruits')">Oatmeal with fruits</div>
+      <div class="food-item" onclick="fetchRecipe('Boiled eggs with avocado')">Boiled eggs with avocado</div>
+      <div class="food-item" onclick="fetchRecipe('Scrambled eggs with toast')">Scrambled eggs with toast</div>
+      <div class="food-item" onclick="fetchRecipe('Chia pudding with almond milk')">Chia pudding with almond milk</div>
+      <div class="food-item" onclick="fetchRecipe('Greek yogurt with berries')">Greek yogurt with berries</div>
+      <div class="food-item" onclick="fetchRecipe('Smoothie with coconut milk')">Smoothie with coconut milk</div>
+    </div>
+
+    <button class="dropdown-btn">Lunch</button>
+    <div class="dropdown-content">
+      <div class="food-item" onclick="fetchRecipe('Grilled tofu with vegetables')">Grilled tofu with vegetables</div>
+      <div class="food-item" onclick="fetchRecipe('Lentil soup with rice')">Lentil soup with rice</div>
+      <div class="food-item" onclick="fetchRecipe('Quinoa salad with chickpeas')">Quinoa salad with chickpeas</div>
+      <div class="food-item" onclick="fetchRecipe('Grilled chicken with greens')">Grilled chicken with greens</div>
+      <div class="food-item" onclick="fetchRecipe('Turkey wrap with hummus')">Turkey wrap with hummus</div>
+      <div class="food-item" onclick="fetchRecipe('Grilled salmon with vegetables')">Grilled salmon with vegetables</div>
+    </div>
+
+    <button class="dropdown-btn">Dinner</button>
+    <div class="dropdown-content">
+      <div class="food-item" onclick="fetchRecipe('Paneer curry with roti')">Paneer curry with roti</div>
+      <div class="food-item" onclick="fetchRecipe('Vegetable curry with brown rice')">Vegetable curry with brown rice</div>
+      <div class="food-item" onclick="fetchRecipe('Baked fish with steamed broccoli')">Baked fish with steamed broccoli</div>
+      <div class="food-item" onclick="fetchRecipe('Baked salmon with roasted vegetables')">Baked salmon with roasted vegetables</div>
+      <div class="food-item" onclick="fetchRecipe('Stuffed bell peppers with rice')">Stuffed bell peppers with rice</div>
+      <div class="food-item" onclick="fetchRecipe('Chicken stir-fry with vegetables')">Chicken stir-fry with vegetables</div>
+    </div>
+
+    <button class="dropdown-btn">Snacks</button>
+    <div class="dropdown-content">
+      <div class="food-item" onclick="fetchRecipe('Mixed nuts')">Mixed nuts</div>
+      <div class="food-item" onclick="fetchRecipe('Pumpkin seeds')">Pumpkin seeds</div>
+      <div class="food-item" onclick="fetchRecipe('Boiled eggs')">Boiled eggs</div>
+      <div class="food-item" onclick="fetchRecipe('Nut-free granola bar')">Nut-free granola bar</div>
+      <div class="food-item" onclick="fetchRecipe('Cheese and crackers')">Cheese and crackers</div>
+    </div>
+  </div>
+
+  <!-- Right glass box: Recipe details -->
+  <div class="glass-box" id="recipeDetails">
+    Select a dish to see details here.
+  </div>
+</div>
+
+<script>
+  // Toggle dropdown content on button click with arrow rotation
+  document.querySelectorAll('.dropdown-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const content = btn.nextElementSibling;
+      const isOpen = content.style.display === 'block';
+
+      // Close all dropdowns before opening the clicked one
+      document.querySelectorAll('.dropdown-content').forEach(dc => dc.style.display = 'none');
+      document.querySelectorAll('.dropdown-btn').forEach(b => b.classList.remove('open'));
+
+      if (!isOpen) {
+        content.style.display = 'block';
+        btn.classList.add('open');
+      }
+    });
+  });
+
+  // ✅ Actual backend fetch for recipe
+  function fetchRecipe(foodItem) {
+    fetch(`/get_recipe?food_item=${encodeURIComponent(foodItem)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        const stepsList = data.recipe.split('|').map(step => `<li>${step.trim()}</li>`).join('');
+        document.getElementById('recipeDetails').innerHTML = `
+          <img src="${data.image}" alt="${foodItem}" />
+          <h3>${foodItem}</h3>
+          <p><strong>Recipe Steps:</strong></p>
+          <ul>${stepsList}</ul>
+          <p><strong>Nutrition (per serving):</strong></p>
+          <ul>
+            <li>Protein: ${data.nutrition.protein}g</li>
+            <li>Fat: ${data.nutrition.fat}g</li>
+            <li>Carbs: ${data.nutrition.carbs}g</li>
+          </ul>
+          <p><a href="${data.link}" target="_blank" rel="noopener noreferrer">Watch Full Recipe on YouTube</a></p>
+        `;
+      })
+      .catch(error => {
+        document.getElementById('recipeDetails').innerHTML =
+          `<p style="color:#ff6666;">Error: ${error.message}</p>`;
+      });
+  }
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Food Options</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        html, body {
+            margin: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url("{{ url_for('static', filename='images/8.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            color: #E0E0E0;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 119, 182, 0.85);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            z-index: 1000;
+            font-weight: 600;
+        }
+        .navbar .logo {
+            font-size: 1.6rem;
+        }
+        .navbar .links a {
+            color: #f0f0f0;
+            text-decoration: none;
+            margin-left: 25px;
+            transition: color 0.3s ease;
+        }
+        .navbar .links a:hover {
+            color: #a0d8ef;
+        }
+
+        .options-container {
+            padding-top: 100px;
+            padding-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .option-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .option-box {
+            background: rgba(255, 255, 255, 0.12);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 15px;
+            padding: 45px 60px; /* Increased padding */
+            font-size: 1.4rem; /* Increased font */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #D1D9E6;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .option-box:hover,
+        .option-box:focus {
+            background: rgba(0, 119, 182, 0.9);
+            color: #FFFFFF;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 119, 182, 0.6);
+            outline: none;
+        }
+
+        .image {
+            width: 220px; /* Slightly increased size */
+            height: 220px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            object-fit: cover;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 14px 0;
+            background: rgba(0, 119, 182, 0.85);
+            color: #f0f0f0;
+            text-align: center;
+            font-size: 0.85rem;
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        @media (max-width: 600px) {
+            .option-wrapper {
+                flex-direction: column;
+            }
+            .image {
+                width: 80%;
+                height: auto;
+            }
+            .option-box {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Food Options</div>
+        <div class="links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="options-container">
+        <div class="option-wrapper">
+            <img src="{{ url_for('static', filename='images/4.jpeg') }}" alt="Image 1" class="image">
+            <div class="option-box" onclick="window.location.href='/recommend_diet'" tabindex="0" role="button">
+                Recommended Diet
+            </div>
+        </div>
+        <div class="option-wrapper">
+            <div class="option-box" onclick="window.location.href='/food_list'" tabindex="0" role="button">
+                Healthy Recipes
+            </div>
+            <img src="{{ url_for('static', filename='images/5.jpeg') }}" alt="Image 2" class="image">
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Health Bright. All rights reserved.
+    </footer>
+</body>
+</html>

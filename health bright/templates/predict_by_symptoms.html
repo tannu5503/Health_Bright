@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Predict Disease by Symptoms</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='images/8.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            color: #D1D9E6;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #0077B6;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 20px;
+            color: white;
+        }
+        .navbar a {
+            color: white !important;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 70px auto 80px;
+            padding: 40px 50px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            color: #D1D9E6;
+            backdrop-filter: blur(8px);
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 30px;
+            color: #00B4D8;
+            font-weight: 700;
+        }
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #00B4D8;
+            text-align: left;
+        }
+        textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 2px solid #0077B6;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #000000;
+            font-size: 16px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        textarea:focus {
+            border-color: #00B4D8;
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            width: 60%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0077B6, #00B4D8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        input[type="submit"]:hover {
+            background: linear-gradient(135deg, #005f8a, #0096c7);
+            transform: scale(1.05);
+        }
+        .result-box {
+            margin-top: 30px;
+            padding: 25px 30px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9);
+            color: #000000;
+            text-align: left;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        .result-box strong {
+            color: #0077B6;
+        }
+        .symptoms-box {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            color: #03045E;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .symptom-tag {
+            background-color: #d0e8ff;
+            color: #0077B6;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            user-select: none;
+        }
+        footer {
+            background-color: #0077B6;
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.02em;
+        }
+        @media (max-width: 700px) {
+            .container {
+                width: 95%;
+                padding: 30px 20px;
+                margin: 50px auto 90px;
+            }
+            input[type="submit"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div>Health Bright</div>
+        <div>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Predict Disease by Symptoms</h2>
+        <form method="POST">
+            <label for="symptoms">Enter Symptoms (separated by commas):</label>
+            <textarea name="symptoms" rows="3" required></textarea>
+            <input type="submit" value="Predict" />
+        </form>
+
+        {% if prediction %}
+            <div class="result-box">
+                <p><strong>Predicted Disease:</strong> {{ prediction }}</p>
+                <p><strong>Diet Recommendation:</strong> {{ suggested_diet }}</p>
+                <p><strong>Precautions:</strong> {{ suggested_precaution }}</p>
+                <p><strong>Exercise Recommendation:</strong> {{ suggested_exercise }}</p>
+                <p><strong>Exercise Precautions:</strong> {{ exercise_precaution }}</p>
+            </div>
+        {% elif error %}
+            <p style="color: #FF6B6B; font-weight: 700; margin-top: 20px;">{{ error }}</p>
+        {% endif %}
+
+        <h3 style="margin-top: 40px; color: #00B4D8; font-weight: 700;">Available Symptoms</h3>
+        <div class="symptoms-box">
+            {% for symptom in all_symptoms.split(', ') %}
+                <span class="symptom-tag">{{ symptom }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>"This prediction is AI-based and may have errors. Verify with a medical expert."</footer>
+
+</body>
+</html>

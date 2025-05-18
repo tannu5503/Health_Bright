@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Recommendation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='images/8.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: rgba(0, 119, 182, 0.8);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar div {
+            display: flex;
+            gap: 15px;
+            margin-left: auto;
+        }
+
+        .navbar a {
+            color: white !important;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .input-section, .exercise-section {
+            width: 60%;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            color: #03045E;
+            margin-bottom: 30px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .input-section h2, .exercise-section h2 {
+            color: #ffffff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+        }
+
+        .input-section label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .input-container select, .input-container input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #0077B6;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #03045E;
+            margin-top: 10px;
+        }
+
+        .input-container input {
+            width: 100px;
+            margin-left: 10px;
+        }
+
+        .styled-button {
+            width: 80%;
+            padding: 10px;
+            margin-top: 20px;
+            background: linear-gradient(to right, #0077B6, #023E8A);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .styled-button:hover {
+            background: linear-gradient(to right, #023E8A, #0077B6);
+            transform: scale(1.05);
+        }
+
+        .exercise-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .exercise-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            color: #03045E;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            background-color: rgba(0, 119, 182, 0.8);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            width: 100%;
+            position: relative;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+    	    position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <span>Health Bright</span>
+        <div>
+            <a href="/dashboard">Dashboard</a> |
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="input-section">
+            <h2>Select Your Preferences</h2>
+            <form method="POST">
+                <div class="input-container">
+                    <select name="goal" required>
+                        <option value="" disabled selected>Select Exercise Type</option>
+                        {% for exercise_type in exercise_types %}
+                            <option value="{{ exercise_type }}">{{ exercise_type }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <input type="number" name="weight" min="2" max="20" step="1" required placeholder="Weight (kg)">
+                </div>
+                <button type="submit" class="styled-button">Get Recommendation</button>
+            </form>
+        </div>
+
+        <div class="exercise-section">
+            <h2>Recommended Exercises</h2>
+            <div class="exercise-list">
+                {% if recommended_exercises %}
+                    {% for exercise in recommended_exercises %}
+                        <div class="exercise-item">
+                            <strong><u>{{ exercise.name }}</u></strong><br><br>
+                            <strong>Duration:</strong> {{ exercise.duration }} min<br><br>
+                            <strong>Intensity:</strong> {{ exercise.intensity }}<br><br>
+                            Steps: {{ exercise.steps }}<br>
+                            <a href="{{ exercise.link }}" target="_blank" style="display: block; margin-top: 10px;">Watch Video</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No exercises available. Please select a type.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">Individuals with joint pain, pregnancy, or muscle cramps should consult a physician before performing these exercises</div>
+</body>
+</html>

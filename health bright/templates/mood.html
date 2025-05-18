@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mood Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='images/8.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .navbar {
+            background-color: rgba(0, 119, 182, 0.8); /* Semi-transparent royal blue */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar .menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar .menu a:hover {
+            text-decoration: underline;
+        }
+
+        .glass-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 500px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: none;
+            resize: none;
+        }
+
+        button {
+            margin-top: 20px;
+            background-color: #0077B6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005f87;
+        }
+
+        .results {
+            margin-top: 30px;
+            font-size: 18px;
+            color: #fff;
+            text-align: left;
+        }
+
+        .results span {
+            font-weight: bold;
+            color: #00ffff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: rgba(0, 119, 182, 0.8);
+            color: white;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Health Bright</div>
+        <div class="menu">
+            <a href="/logout">Logout</a>
+            <a href="/profile">Profile</a>
+            <a href="/">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="glass-box">
+        <h2>How are you feeling today?</h2>
+        <textarea id="moodInput" placeholder="Type your mood or how you're feeling..."></textarea>
+        <button onclick="analyzeMood()">Get Recommendations</button>
+
+        <div class="results" id="moodResults" style="display:none;">
+            <p>Detected Emotion: <span id="emotion"></span></p>
+            <p>🎵 Music: <span id="music"></span></p>
+            <p>🌬️ Breathing Exercise: <span id="breathing"></span></p>
+            <p>🍵 Herbal Tea: <span id="tea"></span></p>
+            <p>🏃 Gentle Workout: <span id="workout"></span></p>
+            <p>🎧 Podcast: <span id="podcast"></span></p>
+            <p>💬 Affirmation: <span id="affirmation"></span></p>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Health Bright. Stay glowing, stay grounded ✨
+    </footer>
+
+    <script>
+        function analyzeMood() {
+            const mood = document.getElementById('moodInput').value;
+
+            fetch('/get_recommendations', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ mood: mood })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('moodResults').style.display = 'block';
+                document.getElementById('emotion').innerText = data.emotion;
+                document.getElementById('music').innerText = data.music;
+                document.getElementById('breathing').innerText = data.breathing;
+                document.getElementById('tea').innerText = data.tea;
+                document.getElementById('workout').innerText = data.workout;
+                document.getElementById('podcast').innerText = data.podcast;
+                document.getElementById('affirmation').innerText = data.affirmation;
+
+            })
+            .catch(error => {
+                alert("Oops! Couldn’t analyze your mood. Try again later.");
+                console.error(error);
+            });
+        }
+    </script>
+</body>
+</html>

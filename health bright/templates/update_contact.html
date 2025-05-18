@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Update Contact Details</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      background: rgba(0, 119, 182, 0.3);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 600;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      padding: 40px;
+      width: 50%;
+      margin: 60px auto;
+      color: #ffffffcc;
+      text-align: center;
+    }
+
+    .container h2 {
+      font-weight: 800;
+      color: #00ffff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 8px #00ffff88;
+    }
+
+    .profile-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .label {
+      font-weight: bold;
+      color: #ffffffcc;
+      width: 40%;
+      text-align: left;
+    }
+
+    .value {
+      color: #ffffffaa;
+      width: 60%;
+      text-align: right;
+    }
+
+    input {
+      display: none;
+      width: 60%;
+      padding: 10px;
+      font-size: 15px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      outline: none;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    input::placeholder {
+      color: #ffffffbb;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background-color: #00ffff;
+      color: #1e3c72;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #66ffff;
+    }
+
+    .footer {
+      background: rgba(0, 119, 182, 0.3);
+      backdrop-filter: blur(10px);
+      color: white;
+      text-align: center;
+      padding: 12px;
+      font-size: 14px;
+      margin-top: auto;
+    }
+  </style>
+  <script>
+    function enableEdit() {
+      document.querySelectorAll('.value').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('input').forEach(el => el.style.display = 'block');
+      document.getElementById('saveBtn').style.display = 'block';
+      document.getElementById('editBtn').style.display = 'none';
+    }
+  </script>
+</head>
+<body>
+
+<div class="navbar">
+  <div>Health Bright</div>
+  <div>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/profile">User Options</a>
+    <a href="/logout">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  <h2>Update Contact Details</h2>
+  <form method="POST">
+    <div class="profile-item">
+      <span class="label">Name:</span>
+      <span class="value">{{ contact.name }}</span>
+      <input type="text" name="name" value="{{ contact.name }}">
+    </div>
+    <div class="profile-item">
+      <span class="label">Mobile Number:</span>
+      <span class="value">{{ contact.mobile }}</span>
+      <input type="text" name="mobile" value="{{ contact.mobile }}">
+    </div>
+    <div class="profile-item">
+      <span class="label">Email ID:</span>
+      <span class="value">{{ contact.email }}</span>
+      <input type="email" name="email" value="{{ contact.email }}">
+    </div>
+    <button type="button" class="btn" id="editBtn" onclick="enableEdit()">Edit Contact</button>
+    <button type="submit" class="btn" id="saveBtn" style="display:none;">Save Changes</button>
+  </form>
+</div>
+
+<div class="footer">© 2025 Health Bright - All Rights Reserved</div>
+
+</body>
+</html>

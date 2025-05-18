@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>What's In My Kitchen?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url("{{ url_for('static', filename='images/8.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-top: 50px;
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input, button {
+            padding: 12px;
+            font-size: 1rem;
+            width: 280px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+        }
+
+        input {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #0077b6;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .recipes {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .recipe {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            color: #000;
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .recipe:hover {
+            transform: scale(1.03);
+        }
+
+        .recipe img {
+            max-width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .recipe h3 {
+            font-size: 1.1rem;
+            margin: 10px 0 0;
+        }
+
+        .instructions {
+            display: none;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-align: left;
+            background: rgba(255,255,255,0.6);
+            padding: 10px;
+            border-radius: 10px;
+            color: #000;
+        }
+
+        p {
+            color: red;
+            font-weight: bold;
+            background-color: rgba(255,255,255,0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>What's In My Kitchen? 🍽</h1>
+    <form method="post">
+        <input type="text" name="ingredients" placeholder="e.g. paneer, spinach, tomato">
+        <button type="submit">Build My Meal</button>
+    </form>
+
+    {% if recipes %}
+    <div class="recipes">
+        {% for recipe in recipes %}
+        <div class="recipe" onclick="toggleInstructions(this)">
+            <img src="{{ recipe['image'] }}" alt="{{ recipe['title'] }}">
+            <h3>{{ recipe['title'] }}</h3>
+            <div class="instructions">
+                {{ recipe['instructions'] | safe }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% elif error %}
+    <p>{{ error }}</p>
+    {% endif %}
+
+    <script>
+        function toggleInstructions(element) {
+            const box = element.querySelector(".instructions");
+            box.style.display = box.style.display === "none" ? "block" : "none";
+        }
+    </script>
+</body>
+</html>
